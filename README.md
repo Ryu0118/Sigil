@@ -1,6 +1,6 @@
 # Sigil
 
-**Collect labels from your Swift code, the way Swift Testing collects tests.**
+**Attach typed labels to Swift types, and collect them from anywhere.**
 
 Mark any type with `@Labeled(...)`, then read every labeled type back with `LabelRegistry`. Each module annotates its own types and Sigil gathers them, so there is no central list to maintain. Labels are your own types.
 
