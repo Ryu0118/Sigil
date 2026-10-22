@@ -8,7 +8,7 @@ rules:
   - Sources/SigilScan/LabelRequirement.swift
   doc: README.md
   message: CLI commands or the requirement schema changed - verify the README usage.
-  checksum: 611eac91b9c7550d7a5ce1eeab76f7570772ba7a8434c635f22f51bed3427b80
+  checksum: 8bb769cabf5179a24bc22a6c2d429784928b812583148828e2427a8018e250c6
 - name: readme-runtime
   sources:
   - Sources/Sigil/Labeled.swift
