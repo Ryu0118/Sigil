@@ -1,58 +1,106 @@
 # Sigil
 
-Attach typed labels to Swift declarations and collect them again, at run time or from source, without writing the same string in two places.
+**Stop typing screen names twice.**
+
+Sigil is a typed labeling layer for Swift declarations. Mark a type once with `@Labeled`, then read the labels back from running code or straight from source. It is for apps that keep analytics, routing or ownership metadata next to their screens and want the compiler and CI to keep it honest.
+
+## Features
+
+- 🏷️ **One annotation, typed** — labels are your own `Sendable` types, not strings scattered across files
+- 🔍 **Find them without running the app** — a CLI scans source for every label, so CI can verify them with no build and no simulator
+- 🚦 **Catch missing and drifting labels** — fails when a screen has no label, two screens share a name, or code disagrees with your analytics schema
+
+## Installation
 
 ```swift
-struct ScreenLabel: Label { let name: String }
-
-@Labeled(ScreenLabel(name: "home"))
-struct HomeView: View { ... }
+.package(url: "https://github.com/Ryu0118/Sigil.git", branch: "main")
 ```
-
-Sigil has three parts that share one annotation.
-
-| Part | Product | Use |
-| --- | --- | --- |
-| Macro and runtime registry | `Sigil` | `@Labeled(...)` stores a record in the `__DATA,__sigil` section; `LabelRegistry` reads the records of every loaded image. |
-| Source scanner | `SigilScan` | SwiftSyntax scan of `@Labeled` uses, with no build and no running app. |
-| CLI | `sigil` | `scan`, `check` and `manifest` on top of `SigilScan`. |
-
-## Runtime
 
 ```swift
-// Every labeled type in the process, including dynamic libraries.
-let screens = LabelRegistry.entries(carrying: ScreenLabel.self)
-
-// Without the registry: the macro also adds a `LabeledSubject` conformance.
-HomeView.labels   // [ScreenLabel(name: "home")]
+.target(name: "MyFeature", dependencies: [.product(name: "Sigil", package: "Sigil")])
 ```
 
-A label type must be `Sendable`. Label expressions are evaluated in a C-convention closure, so they cannot capture state. The annotated type must be non-generic.
-
-## CLI
+CLI:
 
 ```sh
-sigil scan --root .                                   # all declarations and labels as JSON
-sigil check --root . --config .sigil.yml              # missing labels as file:line: error:
-sigil manifest --label ScreenLabel --argument name    # one value per line
+git clone https://github.com/Ryu0118/Sigil.git && cd Sigil
+swift build -c release --product sigil
+```
+
+---
+
+## Quick start
+
+1. Define a label and attach it.
+
+   ```swift
+   struct ScreenLabel: Label { let name: String }
+
+   @Labeled(ScreenLabel(name: "home"))
+   struct HomeView: View { ... }
+   ```
+
+2. Read it back.
+
+   ```swift
+   HomeView.labels                                     // [ScreenLabel(name: "home")]
+   LabelRegistry.entries(carrying: ScreenLabel.self)   // every labeled type in the process
+   ```
+
+3. Require it. Add `.sigil.yml`:
+
+   ```yaml
+   requirements:
+     - label: ScreenLabel
+       conformsTo: [View]
+       include: ["Sources/**"]
+       exclude: ["**/Components/**"]
+   ```
+
+   ```sh
+   sigil check
+   # Sources/Settings/SettingsView.swift:8: error: SettingsView must be annotated with @Labeled(ScreenLabel(...))
+   ```
+
+---
+
+## Export names
+
+```sh
+sigil manifest --label ScreenLabel --argument name
 sigil manifest --label ScreenLabel --argument name --expected screens.txt
 ```
 
-`check` reads `.sigil.yml`:
+---
+
+## CI integration
 
 ```yaml
-requirements:
-  - label: ScreenLabel
-    conformsTo: [View]          # select by inheritance clause ...
-    attributes: [Reducer]       # ... or by attribute
-    include: ["Sources/**"]
-    exclude: ["**/Components/**"]
+- run: sigil check
+- run: sigil manifest --label ScreenLabel --argument name --expected screens.txt
 ```
 
-`manifest` exits non-zero when two declarations share a value, or when the values differ from `--expected` (a file with one value per line). Use it to keep code and an analytics schema in agreement in CI, where the app cannot be launched.
+---
 
-## Platform support and limits
+## Command reference
 
-- Run-time collection reads Mach-O sections through dyld, so it supports Apple platforms. Other platforms compile but the registry returns no entries.
-- Verified with Swift 6.4: records survive a release build with `-dead_strip`, and are found inside a dynamic library. Records in a static library linked through an Xcode `.a` are not verified yet.
-- The section initializer must be a constant expression. Records therefore hold a version tag and a `@convention(c)` function that builds the entry on demand; they never store strings directly.
+```
+sigil scan      [--root <dir>] [--skip <names>...]
+sigil check     [--root <dir>] [--skip <names>...] [--config <file>]
+sigil manifest  [--root <dir>] [--skip <names>...] --label <type> --argument <name> [--format json|names] [--expected <file>]
+```
+
+| Requirement key | Meaning |
+|---|---|
+| `label` | Label type every match must carry |
+| `conformsTo` | Select types by inheritance clause |
+| `attributes` | Select types by attribute, such as `Reducer` |
+| `include` / `exclude` | Glob patterns of files in scope |
+
+Labels work on Apple platforms. Annotated types must be non-generic.
+
+---
+
+## License
+
+MIT
