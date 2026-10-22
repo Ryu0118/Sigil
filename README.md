@@ -1,6 +1,11 @@
-# Sigil
+# 🏷️ Sigil
 
 **Attach typed labels to Swift types, and collect them from anywhere.**
+
+[![Test](https://github.com/Ryu0118/Sigil/actions/workflows/test.yml/badge.svg)](https://github.com/Ryu0118/Sigil/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Swift](https://img.shields.io/badge/Swift-6.3-F05138?logo=swift&logoColor=white)](https://swift.org)
+[![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-lightgrey)](https://developer.apple.com)
 
 Mark any type with `@Labeled(...)`, then read every labeled type back with `LabelRegistry`. Each module annotates its own types and Sigil gathers them, so there is no central list to maintain. Labels are your own types.
 
