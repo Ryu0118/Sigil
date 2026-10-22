@@ -46,10 +46,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Select Xcode 27
+      - name: Inspect toolchains
         run: |
-          sudo xcode-select -s "$DEVELOPER_DIR"
-          swift --version
+          ls /Applications | grep -i xcode || true
+          xcodebuild -version || true
+          swift --version || true
+          sw_vers
 
       - name: Build
         run: swift build
