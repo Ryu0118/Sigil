@@ -20,11 +20,18 @@ Sigil is a typed labeling layer for Swift declarations. Mark a type once with `@
 .target(name: "MyFeature", dependencies: [.product(name: "Sigil", package: "Sigil")])
 ```
 
-CLI:
+### CLI
+
+Nest ([mtj0928/nest](https://github.com/mtj0928/nest)):
 
 ```sh
-git clone https://github.com/Ryu0118/Sigil.git && cd Sigil
-swift build -c release --product sigil
+nest install Ryu0118/Sigil
+```
+
+Mise ([jdx/mise](https://github.com/jdx/mise)):
+
+```sh
+mise use -g github:Ryu0118/Sigil
 ```
 
 ---
