@@ -1,0 +1,21 @@
+rules:
+- name: readme-cli
+  sources:
+  - Sources/SigilCLI/Sigil.swift
+  - Sources/SigilCLI/ScanCommand.swift
+  - Sources/SigilCLI/CheckCommand.swift
+  - Sources/SigilCLI/ManifestCommand.swift
+  - Sources/SigilScan/LabelRequirement.swift
+  doc: README.md
+  message: CLI commands or the requirement schema changed - verify the README usage.
+  checksum: 611eac91b9c7550d7a5ce1eeab76f7570772ba7a8434c635f22f51bed3427b80
+- name: readme-runtime
+  sources:
+  - Sources/Sigil/Labeled.swift
+  - Sources/Sigil/LabelRegistry.swift
+  - Sources/Sigil/LabelSection.swift
+  - Sources/SigilMacros/LabeledMacro.swift
+  doc: README.md
+  message: Macro or registry behavior changed - verify the README runtime section
+    and limits.
+  checksum: 8f22fc90416cf9ea22786958de2899ca6f469184b2da671068849ec49817211c
