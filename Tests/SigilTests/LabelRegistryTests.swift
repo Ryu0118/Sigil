@@ -38,4 +38,12 @@ struct LabelRegistryTests {
 
         #expect(names == ["home"])
     }
+
+    @Test("finds SwiftUI views and MainActor types, whose isolation must not hide the record")
+    func findsMainActorIsolatedTypes() {
+        let names = LabelRegistry.entries(carrying: ScreenLabel.self).flatMap(\.labels).map(\.name)
+
+        #expect(names.contains("swiftui-home"))
+        #expect(names.contains("main-actor"))
+    }
 }
