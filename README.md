@@ -1,14 +1,14 @@
 # Sigil
 
-**Stop typing screen names twice.**
+**Collect labels from your Swift code, the way Swift Testing collects tests.**
 
-Sigil is a typed labeling layer for Swift declarations. Mark a type once with `@Labeled`, then read the labels back from running code or straight from source. It is for apps that keep analytics, routing or ownership metadata next to their screens and want the compiler and CI to keep it honest.
+Mark any type with `@Labeled(...)`, then read every labeled type back with `LabelRegistry`. Each module annotates its own types and Sigil gathers them, so there is no central list to maintain. Labels are your own types.
 
 ## Features
 
-- 🏷️ **One annotation, typed** — labels are your own `Sendable` types, not strings scattered across files
-- 🔍 **Find them without running the app** — a CLI scans source for every label, so CI can verify them with no build and no simulator
-- 🚦 **Catch missing and drifting labels** — fails when a screen has no label, two screens share a name, or code disagrees with your analytics schema
+- 🏷️ **Typed labels** — any `Sendable` type conforming to `Label`, not strings
+- 📦 **No central list** — types are collected across modules and dynamic libraries automatically
+- 🔍 **Readable from source** — the `sigil` CLI lists labels without building or running anything
 
 ## Installation
 
@@ -20,11 +20,18 @@ Sigil is a typed labeling layer for Swift declarations. Mark a type once with `@
 .target(name: "MyFeature", dependencies: [.product(name: "Sigil", package: "Sigil")])
 ```
 
-CLI:
+### CLI
+
+Nest ([mtj0928/nest](https://github.com/mtj0928/nest)):
 
 ```sh
-git clone https://github.com/Ryu0118/Sigil.git && cd Sigil
-swift build -c release --product sigil
+nest install Ryu0118/Sigil
+```
+
+Mise ([jdx/mise](https://github.com/jdx/mise)):
+
+```sh
+mise use -g github:Ryu0118/Sigil
 ```
 
 ---
@@ -40,64 +47,17 @@ swift build -c release --product sigil
    struct HomeView: View { ... }
    ```
 
-2. Read it back.
+2. Collect.
 
    ```swift
-   HomeView.labels                                     // [ScreenLabel(name: "home")]
-   LabelRegistry.entries(carrying: ScreenLabel.self)   // every labeled type in the process
+   LabelRegistry.entries(carrying: ScreenLabel.self)
    ```
 
-3. Require it. Add `.sigil.yml`:
-
-   ```yaml
-   requirements:
-     - label: ScreenLabel
-       conformsTo: [View]
-       include: ["Sources/**"]
-       exclude: ["**/Components/**"]
-   ```
+3. Or list them from source.
 
    ```sh
-   sigil check
-   # Sources/Settings/SettingsView.swift:8: error: SettingsView must be annotated with @Labeled(ScreenLabel(...))
+   sigil scan
    ```
-
----
-
-## Export names
-
-```sh
-sigil manifest --label ScreenLabel --argument name
-sigil manifest --label ScreenLabel --argument name --expected screens.txt
-```
-
----
-
-## CI integration
-
-```yaml
-- run: sigil check
-- run: sigil manifest --label ScreenLabel --argument name --expected screens.txt
-```
-
----
-
-## Command reference
-
-```
-sigil scan      [--root <dir>] [--skip <names>...]
-sigil check     [--root <dir>] [--skip <names>...] [--config <file>]
-sigil manifest  [--root <dir>] [--skip <names>...] --label <type> --argument <name> [--format json|names] [--expected <file>]
-```
-
-| Requirement key | Meaning |
-|---|---|
-| `label` | Label type every match must carry |
-| `conformsTo` | Select types by inheritance clause |
-| `attributes` | Select types by attribute, such as `Reducer` |
-| `include` / `exclude` | Glob patterns of files in scope |
-
-Labels work on Apple platforms. Annotated types must be non-generic.
 
 ---
 
