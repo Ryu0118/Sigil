@@ -1,0 +1,6 @@
+.build/
+.swiftpm/
+.superpowers/
+node_modules/
+*.xcodeproj
+xcuserdata/
