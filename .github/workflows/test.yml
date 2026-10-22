@@ -37,7 +37,7 @@ jobs:
   build-and-test:
     name: Build and Test
     needs: lint
-    runs-on: xcode-27
+    runs-on: macos-26
     permissions:
       contents: read
     env:
