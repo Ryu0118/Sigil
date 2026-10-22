@@ -7,7 +7,7 @@ Swift package for attaching typed labels to declarations with the `@Labeled` mac
 | Command | Purpose |
 | --- | --- |
 | `swift build` | Build every target. |
-| `swift test` | Run all tests (macro expansion, registry, scanner, configuration). |
+| `swift test` | Run all tests (macro expansion, registry, scanner). |
 | `swift run sigil` | Run the CLI. |
 | `mise exec -- swiftformat .` | Format; CI runs it with `--lint`. |
 | `mise exec -- swiftlint lint --config .swiftlint.yml --strict` | SwiftLint. |
@@ -19,7 +19,7 @@ Swift package for attaching typed labels to declarations with the `@Labeled` mac
 ```text
 Sources/Sigil/       runtime: Label, LabelRegistry, section reader, the @Labeled declaration
 Sources/SigilMacros/ compiler plugin implementing @Labeled
-Sources/SigilScan/   SwiftSyntax scanner, requirements, manifest, configuration
+Sources/SigilScan/   SwiftSyntax scanner for @Labeled declarations
 Sources/SigilCLI/    thin ArgumentParser commands over SigilScan
 ```
 

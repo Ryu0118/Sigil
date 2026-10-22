@@ -3,12 +3,9 @@ rules:
   sources:
   - Sources/SigilCLI/Sigil.swift
   - Sources/SigilCLI/ScanCommand.swift
-  - Sources/SigilCLI/CheckCommand.swift
-  - Sources/SigilCLI/ManifestCommand.swift
-  - Sources/SigilScan/LabelRequirement.swift
   doc: README.md
-  message: CLI commands or the requirement schema changed - verify the README usage.
-  checksum: 8bb769cabf5179a24bc22a6c2d429784928b812583148828e2427a8018e250c6
+  message: CLI commands changed - verify the README usage.
+  checksum: 5bde6405a5af4225abbabd387f915ac6de4f77760ea77fc934ed59afee582a90
 - name: readme-runtime
   sources:
   - Sources/Sigil/Labeled.swift
