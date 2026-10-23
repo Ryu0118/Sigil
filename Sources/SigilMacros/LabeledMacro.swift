@@ -47,7 +47,7 @@ extension LabeledMacro: ExtensionMacro {
 
         let conformance: DeclSyntax = """
         extension \(type.trimmed): Sigil.LabeledSubject {
-            nonisolated static var labels: [any Sigil.Label] {
+            \(raw: subject.accessModifier.isEmpty ? "" : subject.accessModifier + " ")nonisolated static var labels: [any Sigil.Label] {
                 \(raw: subject.labelsLiteral)
             }
         }
