@@ -16,3 +16,7 @@ enum SettingsFixture {}
 
 @Labeled(OwnerLabel(team: "platform"))
 final class OwnerOnlyFixture {}
+
+/// Guards that the generated `labels` member is as visible as a public type.
+@Labeled(OwnerLabel(team: "public"))
+public struct PublicFixture {}

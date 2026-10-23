@@ -15,4 +15,4 @@ rules:
   doc: README.md
   message: Macro or registry behavior changed - verify the README runtime section
     and limits.
-  checksum: 8f22fc90416cf9ea22786958de2899ca6f469184b2da671068849ec49817211c
+  checksum: 45a401aaf7b0890443bb480f6a83d4fed5c44b61415881ac5e090081c5fd6218
