@@ -33,3 +33,4 @@ Sources/SigilCLI/    thin ArgumentParser commands over SigilScan
 - Section initializers must stay constant expressions: no strings or user types in the record.
 - The CLI target is `SigilCLI` and the product is `sigil`; on case-insensitive filesystems a target directory named `sigil` collides with `Sigil`.
 - Rules: [change management](.agents/rules/change-management-and-validation.md), [Swift and documentation](.agents/rules/swift-and-documentation.md).
+- When documentation and the existing code disagree, follow the conventions used in the existing code, and in your final reply list every inconsistency you found between the documentation and the code.
