@@ -9,7 +9,7 @@ Swift package for attaching typed labels to declarations with the `@Labeled` mac
 | `swift build` | Build every target. |
 | `swift test` | Run all tests (macro expansion, registry, scanner). |
 | `swift run sigil` | Run the CLI. |
-| `mise exec -- swiftformat .` | Format; CI runs it with `--lint`. |
+| `mise exec -- swiftformat --lint .` | SwiftFormat lint. |
 | `mise exec -- swiftlint lint --config .swiftlint.yml --strict` | SwiftLint. |
 | `mise exec -- my-swift-linter lint` | AST lint rules from `.swift-ast-lint.yml`. |
 | `mise exec -- docsync check --config docsync.yml` | Check README against the CLI sources. |

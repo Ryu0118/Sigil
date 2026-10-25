@@ -13,7 +13,7 @@ design and source documentation belong in the other two rules.
 
 ## Validation and safety
 
-- After every content-changing commit, run the narrowest relevant validation. For source changes use `swift build`, `swift test`, `mise exec -- swiftformat Sources Tests`, `mise exec -- swiftlint lint --config .swiftlint.yml --strict`, and `mise exec -- my-swift-linter lint`. For `Package.swift` or dependency changes also run `swift package dump-package`.
+- After every content-changing commit, run the narrowest relevant validation. For source changes use `swift build`, `swift test`, `mise exec -- swiftformat --lint .`, `mise exec -- swiftlint lint --config .swiftlint.yml --strict`, and `mise exec -- my-swift-linter lint`. For `Package.swift` or dependency changes also run `swift package dump-package`.
 - If `docsync.yml` tracks a changed or moved file, run `docsync check` and update its checksum before committing.
 - Use `rg`, `rg --files`, and scoped `ls`; never use a broad `find` over a home directory or workspace parent.
 - Do not modify unrelated user changes or remove artifacts unless their ownership and generated nature are clear.
